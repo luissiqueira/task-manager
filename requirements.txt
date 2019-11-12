@@ -1,0 +1,29 @@
+Django==2.2.7
+pytz==2019.3
+sqlparse==0.3.0
+whitenoise==4.1.4
+
+requests==2.21.0
+
+# Utils
+raven==6.10.0
+django-environ==0.4.5
+awscli==1.14.22
+psycopg2==2.8.4
+uWSGI==2.0.18
+
+djangorestframework-jwt==1.11.0
+djangorestframework==3.10.3
+django-cors-headers==3.1.1
+django-filter==2.2.0
+
+# Admin Utils
+django-admin-rangefilter==0.5.1
+django-modeladmin-reorder==0.3.1
+
+boto3==1.10.4
+django-storages==1.7.2
+
+django-reversion==3.0.4
+django-guardian==2.1.0
+django-debug-toolbar==2.0
