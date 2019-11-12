@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -29,6 +29,7 @@ class Role(object):
 
 class Organization(BaseModel):
     name = models.CharField('Nome', max_length=120)
+    roles = GenericRelation('ObjectRole', related_query_name='roles')
 
     def __str__(self):
         return self.name
@@ -53,6 +54,7 @@ class Project(BaseModel):
     title = models.CharField('Título', max_length=120)
     description = models.TextField('Descrição', blank=True)
     status = models.CharField('Status', max_length=80, choices=STATUS_CHOICES, default=STATUS_OPEN)
+    roles = GenericRelation('ObjectRole', related_query_name='roles')
 
     def __str__(self):
         return self.title
@@ -126,6 +128,8 @@ class Task(BaseModel):
     status = models.CharField('Status', max_length=80, choices=STATUS_CHOICES, default=STATUS_PENDING)
     priority = models.CharField('Prioridade', max_length=80, choices=PRIORITY_CHOICES, default=PRIORITY_LOW)
 
+    responsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Responsável',
+                                    null=True, blank=True, related_name='tasks')
     agreed_date = models.DateTimeField('Data combinada', null=True, blank=True)
     final_date = models.DateTimeField('Data da entrega', null=True, blank=True)
 
@@ -152,7 +156,5 @@ class TaskNote(BaseModel):
         verbose_name_plural = 'Notas'
         ordering = ('created_at',)
 
-    # participantes do time
-    # stakeholders
     # escopos
     # entregas relacionadas
