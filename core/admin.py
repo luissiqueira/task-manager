@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_permission_codename
-from django.contrib.contenttypes.admin import GenericStackedInline
+from django.contrib.contenttypes.admin import GenericStackedInline, GenericTabularInline
 from django.db.models import Q
 
 from core.mixins import ObjectPermissionMixin, BaseModelAdmin
@@ -11,12 +11,15 @@ class ObjectRoleInlineAdmin(ObjectPermissionMixin, GenericStackedInline):
     model = ObjectRole
     extra = 0
     fields = ('user', 'role',)
+    exclude = ('deleted', 'creator')
 
 
-class ObjectAttachmentInlineAdmin(GenericStackedInline):
+class ObjectAttachmentInlineAdmin(GenericTabularInline):
     model = ObjectAttachment
     extra = 0
-    fields = ('attachment',)
+    fields = ('attachment', 'creator',)
+    readonly_fields = ('creator',)
+    exclude = ('deleted',)
 
     def has_add_permission(self, request, obj=None):
         if isinstance(obj, Project):
@@ -29,7 +32,7 @@ class ObjectAttachmentInlineAdmin(GenericStackedInline):
 
 @admin.register(Organization)
 class OrganizationAdmin(BaseModelAdmin):
-    readonly_fields = ('deleted',)
+    exclude = ('deleted', 'creator')
 
     inlines = [ObjectRoleInlineAdmin, ObjectAttachmentInlineAdmin]
 
@@ -57,6 +60,7 @@ class ProjectAdmin(BaseModelAdmin):
     list_filter = ('status', 'organization')
     search_fields = ('title', 'description', 'organization__name')
     readonly_fields = ('deleted',)
+    exclude = ('deleted', 'creator')
     inlines = [ObjectRoleInlineAdmin, ObjectAttachmentInlineAdmin]
 
     def get_queryset(self, request):
@@ -92,14 +96,16 @@ class ProjectAdmin(BaseModelAdmin):
 class TaskNoteInlineAdmin(admin.StackedInline):
     model = TaskNote
     extra = 0
-    exclude = ('deleted', 'creator')
+    readonly_fields = ('creator',)
+    exclude = ('deleted',)
 
 
 @admin.register(Task)
 class TaskAdmin(BaseModelAdmin):
-    list_display = ('id', 'title', 'priority', 'status', 'agreed_date', 'final_date', 'project')
-    list_filter = ('priority', 'status', 'agreed_date', 'project', 'project__organization')
+    list_display = ('title', 'responsible', 'priority', 'status', 'agreed_date', 'final_date', 'project')
+    list_filter = ('priority', 'status', 'responsible', 'agreed_date', 'project', 'project__organization')
     readonly_fields = ('deleted',)
+    exclude = ('deleted', 'creator')
     inlines = [ObjectAttachmentInlineAdmin, TaskNoteInlineAdmin]
 
     def get_queryset(self, request):

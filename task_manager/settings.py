@@ -26,7 +26,7 @@ env.read_env()
 SECRET_KEY = 'ydi@2#_o_x)lsun#facys9&%6_6^=fch1w@)1liii)q7c+*a22'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', False)
+DEBUG = env.bool('DEBUG', True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db(default='sqlite:///{}/sqlite3.db'.format(BASE_DIR))
+    'default': env.db(default='sqlite:///{}/db.sqlite3'.format(BASE_DIR))
 }
 
 
