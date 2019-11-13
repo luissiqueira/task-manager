@@ -105,6 +105,7 @@ class TaskAdmin(BaseModelAdmin):
     list_display = ('title', 'responsible', 'priority', 'status', 'agreed_date', 'final_date', 'project')
     list_filter = ('priority', 'status', 'responsible', 'agreed_date', 'project', 'project__organization')
     readonly_fields = ('deleted',)
+    search_fields = ('title', 'description')
     exclude = ('deleted', 'creator')
     inlines = [ObjectAttachmentInlineAdmin, TaskNoteInlineAdmin]
 
