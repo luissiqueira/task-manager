@@ -112,7 +112,7 @@ class TaskAdmin(BaseModelAdmin):
             Q(responsible=request.user) |
             Q(project__roles__user=request.user) |
             Q(project__organization__roles__user=request.user)
-        )
+        ).distinct()
 
     @staticmethod
     def can_view_obj(request, obj):
