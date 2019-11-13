@@ -44,7 +44,7 @@ class OrganizationAdmin(BaseModelAdmin):
         if request.user.is_superuser:
             return qs
 
-        return qs.filter(roles__user=request.user, roles__role=Role.ROLE_ADMIN)
+        return qs.filter(roles__user=request.user, roles__role=Role.ROLE_ADMIN).distinct()
 
     @staticmethod
     def can_view_obj(request, obj):
@@ -65,7 +65,7 @@ class ProjectAdmin(BaseModelAdmin):
         if request.user.is_superuser:
             return qs
 
-        return qs.filter(Q(roles__user=request.user) | Q(organization__roles__user=request.user))
+        return qs.filter(Q(roles__user=request.user) | Q(organization__roles__user=request.user)).distinct()
 
     @staticmethod
     def can_view_obj(request, obj):
