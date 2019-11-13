@@ -102,12 +102,15 @@ class TaskNoteInlineAdmin(admin.StackedInline):
 
 @admin.register(Task)
 class TaskAdmin(BaseModelAdmin):
-    list_display = ('title', 'description', 'responsible', 'priority', 'status', 'agreed_date', 'final_date', 'project')
+    list_display = ('title', 'short_description', 'responsible', 'priority', 'status', 'agreed_date', 'final_date',
+                    'project')
     list_filter = ('priority', 'status', 'responsible', 'agreed_date', 'project', 'project__organization')
     readonly_fields = ('deleted',)
     search_fields = ('title', 'description')
     exclude = ('deleted', 'creator')
     inlines = [ObjectAttachmentInlineAdmin, TaskNoteInlineAdmin]
+
+
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

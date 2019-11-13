@@ -130,11 +130,15 @@ class Task(BaseModel):
 
     responsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Responsável',
                                     null=True, blank=True, related_name='tasks')
-    agreed_date = models.DateTimeField('Data combinada', null=True, blank=True)
+    agreed_date = models.DateTimeField('Data planejada', null=True, blank=True)
     final_date = models.DateTimeField('Data da entrega', null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    @property
+    def short_description(self):
+        return self.description[:60]
 
     class Meta:
         verbose_name = 'Entrega'
