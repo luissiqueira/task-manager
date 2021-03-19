@@ -13,7 +13,7 @@ psycopg2==2.8.4
 uWSGI==2.0.18
 
 djangorestframework-jwt==1.11.0
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 django-cors-headers==3.1.1
 django-filter==2.2.0
 
